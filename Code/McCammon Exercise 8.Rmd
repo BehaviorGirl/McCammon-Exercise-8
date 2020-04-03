@@ -41,8 +41,6 @@ write.csv(personality.total,
           row.names = FALSE)
 ```
 
-
-
 ### 3. 
 #### Use the hsb2 data and ggplot2 to construct a single scatterplot showing the relationship of science scores (response) to math scores (explanatory) by gender
 
