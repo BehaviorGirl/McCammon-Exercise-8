@@ -1,0 +1,84 @@
+---
+title: "McCammon Exercise 8"
+output:
+  html_document:
+    df_print: paged
+---
+
+### 1. 
+#### Create a function that will compute the total score for respondents on a Likert scale. The function accepts a data frame, a numeric with the scale used, and a numeric vector indicating the item number that should be reversed. 
+
+```{r echo=TRUE}
+likert.score <- function(df, scale, item) {
+  reverse.score <- df[,item] <- (scale+1) - df[,item]
+  total.score <- apply(df,1, sum)
+  return(total.score)
+}
+```
+
+### 2. 
+#### Create a CSV file that contains data from a hypothetical survey with eight Likert items using a six-point scale with three of these being revese scored. Write a script that reads in your data, sends it to your function for scoring then writes the results to a csv file that now contains the original data with the score added 
+
+```{r include=FALSE}
+library(here)
+```
+```{r include=FALSE}
+personality <- read.csv(here("Data","Personality.csv"))
+```
+```{r echo=FALSE}
+likert.score(personality, 6, c(3,4,8))
+```
+```{r include=FALSE}
+total <- likert.score(personality, 6, c(3,4,8))
+```
+```{r echo=FALSE}
+personality.total <- cbind(personality,total)
+personality.total
+```
+```{r echo=TRUE}
+write.csv(personality.total,
+          file = "New Personality (with total score).csv",
+          row.names = FALSE)
+```
+
+
+
+### 3. 
+#### Use the hsb2 data and ggplot2 to construct a single scatterplot showing the relationship of science scores (response) to math scores (explanatory) by gender
+
+```{r include=FALSE}
+library(tidyverse)
+```
+```{r include=FALSE}
+library(here)
+```
+```{r include=FALSE}
+hsb2 <- read_csv(here("Data","hsb2.csv"))
+```
+```{r include=FALSE}
+hsb2$female <- factor(hsb2$female, labels = c("female","male"), ordered = FALSE)
+```
+```{r echo=FALSE}
+ggplot(data = hsb2) +
+  geom_point(mapping = aes(x=math, y = science, color = female))
+```
+
+### 4. 
+#### Show the relationship of science scores to math scores by gender, but this time facet on gender to show separate scatterplots
+
+```{r echo=FALSE}
+ggplot(data = hsb2) +
+  geom_point(mapping = aes(x=math, y = science)) +
+  facet_wrap(~female)
+```
+
+### 5. 
+#### Using ggplot2 and hsb2 data, create a graph using a geom that was not mentioned in the lecture. Describe what the graph illustrates
+*This graph displays the scatterplot with the regression line for the relationship between math and science scores by gender, we see that female scores vary more than males*
+
+```{r echo=FALSE}
+ggplot(data = hsb2, mapping = aes(x = math, y = science, col = female))+
+    geom_point() +
+    geom_abline()+
+    facet_wrap(~female)
+```
