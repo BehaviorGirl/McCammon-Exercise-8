@@ -12,7 +12,8 @@ output:
 likert.score <- function(df, scale, item) {
   reverse.score <- df[,item] <- (scale+1) - df[,item]
   total.score <- apply(df,1, sum)
-  return(total.score)
+  personality.total <- cbind(df,total.score)
+  return(personality.total)
 }
 ```
 
@@ -28,17 +29,9 @@ personality <- read.csv(here("Data","Personality.csv"))
 ```{r echo=FALSE}
 likert.score(personality, 6, c(3,4,8))
 ```
-```{r include=FALSE}
-total <- likert.score(personality, 6, c(3,4,8))
-```
-```{r echo=FALSE}
-personality.total <- cbind(personality,total)
-personality.total
-```
 ```{r echo=TRUE}
-write.csv(personality.total,
-          file = "New Personality (with total score).csv",
-          row.names = FALSE)
+write.csv(personality.total,file = "Personality (with total score).csv",
+          row.names = FALSE) 
 ```
 
 ### 3. 
