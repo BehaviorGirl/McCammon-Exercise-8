@@ -27,9 +27,10 @@ library(here)
 personality <- read.csv(here("Data","Personality.csv"))
 ```
 ```{r echo=FALSE}
-likert.score(personality, 6, c(3,4,8))
+personality.total <-likert.score(personality, 6, c(3,4,8))
+personality.total
 ```
-```{r echo=TRUE}
+```{r include=FALSE}
 write.csv(personality.total,file = "Personality (with total score).csv",
           row.names = FALSE) 
 ```
